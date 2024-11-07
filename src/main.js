@@ -1,11 +1,13 @@
-import * as THREE from '/snn/node_modules/three/build/three.module.js';
-import Stats from '/snn/node_modules/three/examples/jsm/libs/stats.module.js';
-import { GUI } from '/snn/node_modules/three/examples/jsm/libs/lil-gui.module.min.js';
-import * as Tone from '/snn/node_modules/tone/build/Tone.js';
-import { Neuron } from './components/neuron.js';  // Note the .js extension
-import { InputManager } from './components/InputManager';
-import { ConnectionManager } from './components/ConnectionManager';
-import { SoundManager } from './components/SoundManager';
+
+import * as THREE from 'three';
+import Stats from 'three/examples/jsm/libs/stats.module';
+import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min';
+import * as Tone from 'tone';
+
+import { Neuron } from './components/neuron.js';
+import { InputManager } from './components/InputManager.js';
+import { ConnectionManager } from './components/ConnectionManager.js';
+import { SoundManager } from './components/SoundManager.js';
 
 // Add start button styles
 const style = document.createElement('style');

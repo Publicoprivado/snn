@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { resolve } from 'path';
 
 export default defineConfig({
     base: '/snn/', // Make sure this matches your repository name
@@ -6,10 +7,34 @@ export default defineConfig({
         alias: {
             '@': '/src'
         },
-        extensions: ['.js', '.jsx', '.ts', '.tsx'] // Add file extensions to try
+        extensions: ['.js', '.jsx', '.ts', '.tsx']
     },
     optimizeDeps: {
-        include: ['three', '@three.ez/main']
+        include: ['three', '@three.ez/main', 'tone'] // Added tone
+    },
+    build: {
+        target: 'esnext',
+        minify: 'terser',
+        sourcemap: true,
+        chunkSizeWarningLimit: 1000,
+        outDir: 'dist',
+        assetsDir: 'assets',
+        emptyOutDir: true,
+        rollupOptions: {
+            input: {
+                main: resolve(__dirname, 'index.html')
+            },
+            output: {
+                manualChunks: {
+                    three: ['three', 'three/examples/jsm/libs/stats.module', 'three/examples/jsm/libs/lil-gui.module.min'],
+                    tone: ['tone'],
+                    vendor: ['@three.ez/main']
+                },
+                entryFileNames: 'assets/[name].[hash].js',
+                chunkFileNames: 'assets/[name].[hash].js',
+                assetFileNames: 'assets/[name].[hash].[ext]'
+            }
+        }
     },
     server: {
         host: '0.0.0.0',
@@ -28,35 +53,8 @@ export default defineConfig({
         host: '0.0.0.0',
         port: 4173
     },
-    build: {
-        target: 'esnext',
-        minify: 'terser',
-        sourcemap: true,
-        chunkSizeWarningLimit: 1000,
-        outDir: 'dist', // Explicitly set output directory
-        assetsDir: 'assets', // Where to place assets
-        emptyOutDir: true, // Clean the output directory before build
-        rollupOptions: {
-            input: {
-                main: './index.html'  // Add this line to specify entry point
-            },
-            output: {
-                manualChunks: {
-                    three: ['three'],
-                    vendor: ['@three.ez/main']
-                },
-                // Add better file naming for cache management
-                entryFileNames: 'assets/[name].[hash].js',
-                chunkFileNames: 'assets/[name].[hash].js',
-                assetFileNames: 'assets/[name].[hash].[ext]'
-            }
-        }
-    },
-    // Add public path handling
     publicDir: 'public',
-    // Add asset handling
     assetsInclude: ['**/*.gltf', '**/*.glb', '**/*.hdr', '**/*.env'],
-    // Add CSS handling
     css: {
         devSourcemap: true,
         modules: {
